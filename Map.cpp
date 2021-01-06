@@ -1,1 +1,4 @@
-/* Estructura HashMap */
+#include "Map.hpp"
+
+Map::Map(){
+}

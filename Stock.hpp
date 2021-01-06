@@ -1,4 +1,5 @@
 #include "Product.hpp"
+#include "Map.hpp"
 
 class Stock {
 
