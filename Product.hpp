@@ -15,7 +15,7 @@ class Product {
     public:
 
         Product();
-        Product( string id, string name, string type, float cost );
+        Product( string id, string name, string type, float cost, int quantity );
 
         void setId( string id );
         void setName( string name );

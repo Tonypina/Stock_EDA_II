@@ -3,12 +3,13 @@
 Product::Product(  ){
 }
 
-Product::Product( string id, string name, string type, float cost ){
+Product::Product( string id, string name, string type, float cost, int quantity ){
 
     this->id = id;
     this->name = name;
     this->type = type;
     this->cost = cost;
+    this->quantity = quantity;
 }
 
 void Product::setId( string id ){
