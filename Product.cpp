@@ -32,6 +32,7 @@ void Product::setQuantity( int quantity ){
     this->quantity = quantity;
 }
 
+
 string Product::getId(){
     return this->id;
 }
