@@ -3,16 +3,6 @@
 Map::Map(){
 }
 
-Map::Map( int max_size )
-{
-    this->max_size = max_size;
-    Product void_prod( "null", "null", 0.0, 0 );
-
-    for( size_t i = 0; i < this->max_size; ++i ){
-
-        this->table.push_back( make_pair( EMPTY_CELL, void_prod ) );
-    }
-}
 
 // Es la función hash
 
@@ -116,39 +106,6 @@ void Map::swap(pair<string, Product>* val1, pair<string, Product>* val2){
     *val2 = tmp;
 }
 
-void Map::Sort( int first, int last ){
-
-    int x0 = first;
-    int x1 = last;
-    int mid = (first + last)/2;
-    auto piv = this->table[mid];
-
-    while( x0 <= x1){
-
-        while( this->table[x0].second.getName() < piv.second.getName() ){
-            x0++;
-        }
-
-        while(this->table[x1].second.getName() > piv.second.getName() ){
-            --x1;
-        }
-
-        if(x0 <= x1){
-            swap(&this->table[x0], &this->table[x1]);
-            x0++;
-            x1--;
-        }
-    }
-
-    if(first < x1){
-        Sort( first, x1 );
-    }
-
-    if(x0 < last){
-        Sort( x0, last );
-    }
-}
-
 void Map::setSize( int max_size ){
 
     this->max_size = max_size;
@@ -170,17 +127,4 @@ int Map::getLen(){
 
 float Map::getLoadFactor(){
    return ( this->table.size()/(float)this->max_size );
-}
-
-void Map::print(){
-    for( size_t i = 0; i < this->max_size; ++i ){
-        if( this->table[i].first.compare( EMPTY_CELL ) != 0 ){
-            cout << "\t" << this->table[i].first 
-                << "\t\t" << this->table[i].second.getName()
-                << "\t\t" << this->table[i].second.getType()
-                << "\t\t" << this->table[i].second.getCost()
-                << "\t\t" << this->table[i].second.getQuantity() 
-                << endl;
-        }
-    }
 }
