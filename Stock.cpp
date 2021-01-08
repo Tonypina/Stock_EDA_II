@@ -8,7 +8,6 @@ Stock::Stock( int max_size ){
 bool Stock::createProduct( string id, Product product ){
 
     if ( this->map.Insert( make_pair( id, product ) ) ) {
-        this->map.Sort( 0, this->map.getSize()-1 );
         return true;
     }
     return false;
@@ -17,7 +16,6 @@ bool Stock::createProduct( string id, Product product ){
 bool Stock::deleteProduct( string id ){
 
     if( this->map.Delete( id ) ){
-        this->map.Sort( 0, this->map.getSize()-1 );
         return true;
     }
     return false;
@@ -43,13 +41,4 @@ bool Stock::removeProduct( string id, int quantity ){
         }
     }
     return false;
-}
-
-void Stock::print(){
-    system("cls");
-
-    cout << "REPORTE DE INVENTARIO." << endl;
-
-    cout << "\tCODIGO\t\tPRODUCTO\t\tCATEGORIA\t\tPRECIO\t\tCANTIDAD\n" << endl;
-    this->map.print();
 }
