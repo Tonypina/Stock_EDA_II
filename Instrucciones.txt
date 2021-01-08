@@ -1,0 +1,7 @@
+g++ -Wall -o stock main.cpp Product.cpp Map.cpp Stock.cpp
+
+Linux:
+./main.out
+
+Windows:
+main.exe

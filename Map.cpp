@@ -3,181 +3,184 @@
 Map::Map(){
 }
 
-Map::Map( int size )
+Map::Map( int max_size )
 {
-    this->len = 0;
-    this->size = size;
+    this->max_size = max_size;
+    Product void_prod( "null", "null", 0.0, 0 );
 
-    for( int i = 0; i < this->size; ++i ) this->table[ i ].first = EMPTY_CELL;
+    for( size_t i = 0; i < this->max_size; ++i ){
+
+        this->table.push_back( make_pair( EMPTY_CELL, void_prod ) );
+    }
 }
 
 // Es la función hash
 
-int Map::mid_square(int key, int n){
-   int m = (3*n)/2;
-   return (((key^2) % (10^m))/pow(10, (2*n)-m-1));
-}
-
-int Map::simple(char s[], int m){
+int Map::simple( string key, int m ){
    int sum = 0;
-   for(size_t i = 0; i < m; i++){
-      sum += s[i];
+   for(size_t i = 0; i < key.size(); i++){
+      sum += key.c_str()[i];
    }
    return (sum % m);
 }
 
-int Map::gonnet99(char s[], int m){
-   int i;
-   for(i = 0; *s; s++){
-      i = (131*i) + (*s);
-   }
-   return (i % m);
-}
-
-int Map::koffman08(char s[], int m){
-   int sum = 0;
-   int n;
-
-   for(n = 0; *s; s++){
-      n++;
-   }
-
-   for(size_t i = 0; i < n-1; ++i){
-      sum += ((31^(n-1-i))*s[i]);
-   }
-   return (sum % m);
-}
-
-int Map::h( int key, int m)
+int Map::h( string key, int m)
 {
-   //return key % m;
-   return mid_square(key, m);
-   //return koffman08(key, m);
+    return simple( key, m );
 }
 
 // es la función de resolución de colisiones
-int Map::quadratic_probing(int key, int i){
-   return i^2;
+
+int Map::probe( string key, int i ){
+    return i + 1;
 }
 
-int Map::probe( int key, int i ){
-   //return i + 1;
-   return quadratic_probing(key, i);
-}
-
-bool Map::Insert( Map* map, pair<int, Product> key )
+bool Map::Insert( pair< string, Product > key)
 {
-   assert( map );
-   assert( map->len < map->size );
+    assert( this );
+    assert( this->table.size() <= this->max_size );
 
-   int pos;
-   int home = pos = h( key.first, map->size );
+    int pos;
+    int home = pos = h( key.first, this->max_size );
 
-   int i = 0;
+    int i = 0;
 
-   while( map->table[ pos ].first >= 0 ){
-   // si el slot está ocupado, entonces tiene el valor de alguna llave,
-   // y éstas son enteras positivas
+    while( this->table[ pos ].first.compare( EMPTY_CELL ) != 0 ){
 
-      pos = ( home + probe( key.first, i ) ) % map->size;
+        if( this->table[ pos ].first.compare( key.first ) == 0 ) return false;
 
-      if( map->table[ pos ].first == key.first ) return false;
-      // no se aceptan duplicados
+        pos = ( home + probe( key.first, i ) ) % this->max_size;
 
-      ++i;
+        ++i;
+    }
 
-   }
-
-   map->table[ pos ] = key;
-   ++map->len;
-
-   return true;
+    this->table[ pos ] = key;    
+    return true;
 }
 
-Product Map::Search( Map* map, int key )
+Product Map::Search( string key )
 {
-   assert( map );
-   assert( map->len > 0 );
+    assert( this );
 
-   int home = h( key, map->size );
-   int pos = home;
+    int home = h( key, this->max_size );
+    int pos = home;
 
-   int i = 0;
+    int i = 0;
 
-   while( map->table[ pos ].first != EMPTY_CELL && map->table[ pos ].first != key ){
+    while( ( this->table[ pos ].first.compare( EMPTY_CELL ) != 0 && this->table[ pos ].first.compare( key ) != 0 ) || this->table[ pos ].first.compare( DELETED_CELL ) == 0){
 
-      if(map->table[pos].first == DELETED_CELL);
+        pos = ( home + probe( key, i ) ) % this->max_size;
 
-      pos = ( home + probe( key, i ) ) % map->size;
+        ++i;
+    }
 
-      ++i;
-   }
+    if( this->table[ pos ].first == key ){
 
-   if( map->table[ pos ].first == key ){
+        return this->table[ pos ].second;
 
-      return map->table[ pos ].second;
-      // en una aplicación del mundo real debería devolver los datos (value)
-      // asociados a la llave (key), pero en este ejemplo, el propio valor de
-      // key es el "value"
-
-   } else{
-        Product nullProduct( "null", "null", "null", 0, 0.0f );
+    } else{
+        Product nullProduct( "null", "null", 0.0, 0 );
         return nullProduct;
-   }
+    }
 }
 
-bool Map::Delete( Map* map, int key )
+bool Map::Delete( string key )
 {
-   assert( map );
-   assert( map->len > 0 );
+    assert( this );
+    assert( this->table.size() > 0 );
 
-   // busca el slot con la llave (prácticamente es el mismo código de Search())
+    int home = h( key, this->max_size );
+    int pos = home;
 
-   int home = h( key, map->size );
-   int pos = home;
+    int i = 0;
+    while( this->table[ pos ].first.compare( EMPTY_CELL ) != 0 && this->table[ pos ].first.compare( key ) != 0 ){
 
-   int i = 0;
-   while( map->table[ pos ].first != EMPTY_CELL && map->table[ pos ].first != key ){
+        pos = ( home + probe( key, i ) ) % this->max_size;
+        ++i;
+    }
 
-      pos = ( home + probe( key, i ) ) % map->size;
-      ++i;
-   }
+    if( this->table[ pos ].first.compare( key ) == 0 ){
 
-   if( map->table[ pos ].first == key ){
+        this->table[ pos ].first = DELETED_CELL;
+        return true;
+        
+    } else {
 
-      map->table[ pos ].first = DELETED_CELL;
-      return true;
-      
-   } else{
-      return false;
-   }
-   // si no existe deberías terminar el programa inmediatamente (es un error borrar 
-   // algo que no existe) pero en este ejemplo, y para poder realizar pruebas
-   // unitarias (assert()), debes avisar que el slot no existe devolviendo "false"
-
-   // si sí está, marca el slot como DELETED_CELL
-
-   // decrementa el contador de slots ocupados
-
-   // devuelve "true"
+        return false;
+    }
 }
 
-void Map::setSize( int size ){
-    this->size = size;
+void Map::swap(pair<string, Product>* val1, pair<string, Product>* val2){
+    pair<string, Product> tmp = *val1;
+    *val1 = *val2;
+    *val2 = tmp;
 }
 
-void Map::setLen( int len ){
-    this->len = len;
+void Map::Sort( int first, int last ){
+
+    int x0 = first;
+    int x1 = last;
+    int mid = (first + last)/2;
+    auto piv = this->table[mid];
+
+    while( x0 <= x1){
+
+        while( this->table[x0].second.getName() < piv.second.getName() ){
+            x0++;
+        }
+
+        while(this->table[x1].second.getName() > piv.second.getName() ){
+            --x1;
+        }
+
+        if(x0 <= x1){
+            swap(&this->table[x0], &this->table[x1]);
+            x0++;
+            x1--;
+        }
+    }
+
+    if(first < x1){
+        Sort( first, x1 );
+    }
+
+    if(x0 < last){
+        Sort( x0, last );
+    }
+}
+
+void Map::setSize( int max_size ){
+
+    this->max_size = max_size;
+    Product void_prod( "null", "null", 0.0, 0 );
+
+    for( size_t i = 0; i < this->max_size; ++i ){
+
+        this->table.push_back( make_pair( EMPTY_CELL, void_prod ) );
+    }
 }
 
 int Map::getSize(){
-    return this->size;
+    return this->max_size;
 }
 
 int Map::getLen(){
-    return this->len;
+    return this->table.size();
 }
 
 float Map::getLoadFactor(){
-   return (this->len/(float)this->size);
+   return ( this->table.size()/(float)this->max_size );
+}
+
+void Map::print(){
+    for( size_t i = 0; i < this->max_size; ++i ){
+        if( this->table[i].first.compare( EMPTY_CELL ) != 0 ){
+            cout << "\t" << this->table[i].first 
+                << "\t\t" << this->table[i].second.getName()
+                << "\t\t" << this->table[i].second.getType()
+                << "\t\t" << this->table[i].second.getCost()
+                << "\t\t" << this->table[i].second.getQuantity() 
+                << endl;
+        }
+    }
 }

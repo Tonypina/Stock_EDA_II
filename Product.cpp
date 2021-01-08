@@ -3,17 +3,13 @@
 Product::Product(  ){
 }
 
-Product::Product( string id, string name, string type, float cost, int quantity ){
+Product::Product( string name, string type, float cost, int quantity ){
 
-    this->id = id;
+    //this->id = id;
     this->name = name;
     this->type = type;
     this->cost = cost;
     this->quantity = quantity;
-}
-
-void Product::setId( string id ){
-    this->id = id;
 }
 
 void Product::setName( string name ){
@@ -32,10 +28,6 @@ void Product::setQuantity( int quantity ){
     this->quantity = quantity;
 }
 
-
-string Product::getId(){
-    return this->id;
-}
 
 string Product::getName(){
     return this->name;
