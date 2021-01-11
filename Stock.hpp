@@ -37,6 +37,7 @@ class Stock {
         bool removeProduct( std::string id, int quantity );
         void print();
         void serialize();
+        void deserialize();
 };
 
 #endif   /* ----- #ifndef Stock_INC  ----- */
