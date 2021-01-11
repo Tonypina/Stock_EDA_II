@@ -1,15 +1,27 @@
+/**
+ * @file Product.hpp
+ * @author Piña Rossette Marco Antonio
+ * @brief Declaración de la clase Product
+ * @version 0.1
+ * @date 2021-01-09
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
+
 #ifndef Product_INC
 #define Product_INC
 
 #include <string>
 
-using namespace std;
-
+/**
+ * @brief Clase Product
+ * 
+ */
 class Product {
 
     private:
 
-        //std::string id;
         std::string name;
         std::string type;
         float       cost;
@@ -18,19 +30,16 @@ class Product {
     public:
 
         Product();
-        //Product( string id, string name, string type, float cost, int quantity );
-        Product( string name, string type, float cost, int quantity );
+        Product( std::string name, std::string type, float cost, int quantity );
         void Print();
 
-        //void setId( string id );
-        void setName( string name );
-        void setType( string type );
+        void setName( std::string name );
+        void setType( std::string type );
         void setCost( float cost );
         void setQuantity( int quantity );
 
-        //string getId();
-        string getName();
-        string getType();
+        std::string getName();
+        std::string getType();
         float  getCost();
         int    getQuantity();
 };

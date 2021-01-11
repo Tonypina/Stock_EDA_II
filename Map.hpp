@@ -1,3 +1,14 @@
+/**
+ * @file Map.hpp
+ * @author Piña Rossette Marco Antonio
+ * @brief Declaración de la clase Map
+ * @version 0.1
+ * @date 2021-01-09
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
+
 #ifndef  Map_INC
 #define  Map_INC
 
@@ -13,29 +24,34 @@
 
 #define EMPTY_CELL "EMPTY"
 #define DELETED_CELL "DELETED"
-#define HASH_SIZE 30
+#define HASH_SIZE 31
 
+/**
+ * @brief Clase Map que soporta productos
+ * 
+ */
 class Map {
     private:
 
-        vector<pair<string, Product>> table;    ///< Es la tabla hash
+        std::vector<std::pair<std::string, Product>> table; ///< Es la tabla hash
 
         unsigned int max_size; ///< Es el número máximo de elementos en la tabla
+        unsigned int len; ///< Tamaño de la tabla hash
 
-        int simple( string s, int m );
-        int h( string key, int m );
+        int simple( std::string s, int m );
+        int h( std::string key, int m );
 
-        int probe( string key, int i );
-        void swap(pair<string, Product>* val1, pair<string, Product>* val2);
+        int probe( std::string key, int i );
+        void swap(std::pair<std::string, Product>* val1, std::pair<std::string, Product>* val2);
 
     public:    
         
         Map();
         Map( int max_size );
 
-        bool Insert( pair< string, Product > key );
-        Product Search( string key );
-        bool Delete( string key );
+        bool Insert( std::pair< std::string, Product > key );
+        Product* Search( std::string key );
+        bool Delete( std::string key );
         void Sort( int first, int last );
 
         void setSize( int max_size);

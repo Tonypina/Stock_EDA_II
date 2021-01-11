@@ -1,12 +1,45 @@
+/**
+ * @file Map.cpp
+ * @author Piña Rossette Marco Antonio
+ * @brief Definiciones de la clase Map
+ * @version 0.1
+ * @date 2021-01-09
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
+
 #include "Map.hpp"
 
 Map::Map(){
 }
 
+/**
+ * @brief Construct a new Map:: Map object
+ * 
+ * @param max_size Tamaño máximo de la hash
+ */
+Map::Map( int max_size )
+{
+    this->max_size = max_size;
+    this->len = 0;
 
-// Es la función hash
+    Product void_prod( "null", "null", 0.0, 0 );
 
-int Map::simple( string key, int m ){
+    for( size_t i = 0; i < this->max_size; ++i ){
+
+        this->table.push_back( std::make_pair( EMPTY_CELL, void_prod ) );
+    }
+}
+
+/**
+ * @brief Función hash
+ * 
+ * @param key llave string
+ * @param m Tamaño de la hash
+ * @return int Cálculo de la hash
+ */
+int Map::simple( std::string key, int m ){
    int sum = 0;
    for(size_t i = 0; i < key.size(); i++){
       sum += key.c_str()[i];
@@ -14,21 +47,32 @@ int Map::simple( string key, int m ){
    return (sum % m);
 }
 
-int Map::h( string key, int m)
+int Map::h( std::string key, int m)
 {
     return simple( key, m );
 }
 
-// es la función de resolución de colisiones
-
-int Map::probe( string key, int i ){
+/**
+ * @brief Función de solución de colisiones
+ * 
+ * @param key Llave string
+ * @param i Movimiento de la función
+ * @return int Cálculo de la función de colisiones
+ */
+int Map::probe( std::string key, int i ){
     return i + 1;
 }
 
-bool Map::Insert( pair< string, Product > key)
+/**
+ * @brief Inserta un registro en la hash
+ * 
+ * @param key Par a insertar en la hash
+ * @return true Si se pudo insertar
+ * @return false Si no se pudo insertar
+ */
+bool Map::Insert( std::pair< std::string, Product > key)
 {
     assert( this );
-    assert( this->table.size() <= this->max_size );
 
     int pos;
     int home = pos = h( key.first, this->max_size );
@@ -44,11 +88,19 @@ bool Map::Insert( pair< string, Product > key)
         ++i;
     }
 
-    this->table[ pos ] = key;    
+    this->table[ pos ] = key;
+    ++this->len;
+
     return true;
 }
 
-Product Map::Search( string key )
+/**
+ * @brief Busca un registro en la hash
+ * 
+ * @param key Llave a buscar
+ * @return Product* Referencia a un objeto Product
+ */
+Product* Map::Search( std::string key )
 {
     assert( this );
 
@@ -57,34 +109,36 @@ Product Map::Search( string key )
 
     int i = 0;
 
-    while( ( this->table[ pos ].first.compare( EMPTY_CELL ) != 0 && this->table[ pos ].first.compare( key ) != 0 ) || this->table[ pos ].first.compare( DELETED_CELL ) == 0){
-
+    while(  this->table[ pos ].first.compare( EMPTY_CELL ) != 0 && this->table[ pos ].first.compare( key ) != 0 ){
         pos = ( home + probe( key, i ) ) % this->max_size;
-
-        ++i;
+        ++i;   
     }
 
-    if( this->table[ pos ].first == key ){
+    if( this->table[ pos ].first.compare( key ) == 0 ){ 
 
-        return this->table[ pos ].second;
+        return &(this->table[ pos ].second);
 
     } else{
-        Product nullProduct( "null", "null", 0.0, 0 );
-        return nullProduct;
+        return nullptr;
     }
 }
 
-bool Map::Delete( string key )
+/**
+ * @brief Borra un registro de la hash
+ * 
+ * @param key Llave para identificar el registro a borrar
+ * @return true 
+ * @return false 
+ */
+bool Map::Delete( std::string key )
 {
     assert( this );
-    assert( this->table.size() > 0 );
 
     int home = h( key, this->max_size );
     int pos = home;
 
     int i = 0;
     while( this->table[ pos ].first.compare( EMPTY_CELL ) != 0 && this->table[ pos ].first.compare( key ) != 0 ){
-
         pos = ( home + probe( key, i ) ) % this->max_size;
         ++i;
     }
@@ -92,20 +146,69 @@ bool Map::Delete( string key )
     if( this->table[ pos ].first.compare( key ) == 0 ){
 
         this->table[ pos ].first = DELETED_CELL;
-        return true;
-        
-    } else {
 
+        return true;
+    } else {
         return false;
     }
 }
 
-void Map::swap(pair<string, Product>* val1, pair<string, Product>* val2){
-    pair<string, Product> tmp = *val1;
+/**
+ * @brief Método privado para intercambiar valores en Sort
+ * 
+ * @param val1 
+ * @param val2 
+ */
+void Map::swap(std::pair<std::string, Product>* val1, std::pair<std::string, Product>* val2){
+    std::pair<std::string, Product> tmp = *val1;
     *val1 = *val2;
     *val2 = tmp;
 }
 
+/**
+ * @brief Algoritmo de ordenamiento QuickSort adaptado a Productos
+ * 
+ * @param first Primer índice del vector
+ * @param last Segundo índice del vector
+ */
+void Map::Sort( int first, int last ){
+
+    int x0 = first;
+    int x1 = last;
+    int mid = (first + last)/2;
+    auto piv = this->table[mid];
+
+    while( x0 <= x1){
+
+        while( this->table[x0].second.getName() < piv.second.getName() ){
+            x0++;
+        }
+
+        while(this->table[x1].second.getName() > piv.second.getName() ){
+            --x1;
+        }
+
+        if(x0 <= x1){
+            swap(&this->table[x0], &this->table[x1]);
+            x0++;
+            x1--;
+        }
+    }
+
+    if(first < x1){
+        Sort( first, x1 );
+    }
+
+    if(x0 < last){
+        Sort( x0, last );
+    }
+}
+
+/**
+ * @brief Setter del tamaño máximo de la hash
+ * 
+ * @param max_size Tamaño máximo de la hash
+ */
 void Map::setSize( int max_size ){
 
     this->max_size = max_size;
@@ -113,18 +216,50 @@ void Map::setSize( int max_size ){
 
     for( size_t i = 0; i < this->max_size; ++i ){
 
-        this->table.push_back( make_pair( EMPTY_CELL, void_prod ) );
+        this->table.push_back( std::make_pair( EMPTY_CELL, void_prod ) );
     }
 }
 
+/**
+ * @brief Getter del tamaño máximo de la hash
+ * 
+ * @return int Tamañano de la hash
+ */
 int Map::getSize(){
     return this->max_size;
 }
 
+/**
+ * @brief Getter del tamaño actual de la hash
+ * 
+ * @return int 
+ */
 int Map::getLen(){
-    return this->table.size();
+    return this->len;
 }
 
+/**
+ * @brief Regresa el factor de carga de la hash
+ * 
+ * @return float Factor de carga de la hash
+ */
 float Map::getLoadFactor(){
-   return ( this->table.size()/(float)this->max_size );
+   return ( this->len/(float)this->max_size );
+}
+
+/**
+ * @brief Imprime la hash
+ * 
+ */
+void Map::print(){
+    for( size_t i = 0; i < this->max_size; ++i ){
+        if( this->table[i].first.compare( EMPTY_CELL ) != 0 && this->table[i].first.compare( DELETED_CELL ) != 0 ){
+            std::cout << "\t" << this->table[i].first 
+                << "\t\t" << this->table[i].second.getName()
+                << "\t\t" << this->table[i].second.getType()
+                << "\t\t" << this->table[i].second.getCost()
+                << "\t\t" << this->table[i].second.getQuantity() 
+                << std::endl;
+        }
+    }
 }
