@@ -60,6 +60,8 @@ class Map {
         int getLen();
         float getLoadFactor();
 
+        void Serialize();
+        void Deserialize();
         void print();
 };
 
