@@ -248,6 +248,46 @@ float Map::getLoadFactor(){
 }
 
 /**
+ * @brief Serializa los datos de la hash en un archivo binario
+ * 
+ */
+void Map::Serialize(){
+    FILE* file = fopen("inventario.dat", "ab");
+
+    for ( std::pair<std::string, Product> p : this->table ){
+        if( p.first.compare( EMPTY_CELL ) != 0 && p.first.compare( DELETED_CELL ) != 0 ){
+            fwrite( &p.first , sizeof( p.first ), 1, file );
+            fwrite( &p.second , sizeof( p.second ), 1, file );
+        }
+    }
+
+    fclose(file);
+}
+
+/**
+ * @brief Deserializa los datos para merterlos en la hash
+ * 
+ */
+void Map::Deserialize(){
+    FILE* file = fopen("inventario.dat", "a+b");
+    std::pair<std::string, Product> p;
+
+    fread( &p.first, sizeof( std::string ), 1, file );
+    fread( &p.second, sizeof( Product ), 1, file );
+    while (!feof(file)){
+        
+        this->Insert( p );
+
+        fread( &p.first, sizeof( std::string ), 1, file );
+        fread( &p.second, sizeof( Product ), 1, file );        
+    }
+
+    fclose(file);
+    remove("inventario.dat");
+}
+
+
+/**
  * @brief Imprime la hash
  * 
  */
