@@ -134,5 +134,13 @@ void Stock::print(){
  * 
  */
 void Stock::serialize(){
+    this->map.Serialize();
+}
 
+/**
+ * @brief Desserializa los datos de un archivo binario
+ * 
+ */
+void Stock::deserialize(){
+    this->map.Deserialize();
 }
