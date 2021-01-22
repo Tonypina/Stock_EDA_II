@@ -1,7 +1,7 @@
-g++ -Wall -o stock main.cpp Product.cpp Map.cpp Stock.cpp
+g++ -Wall -fopenmp -o Stock main.cpp Product.cpp Map.cpp Stock.cpp
 
 Linux:
-./main.out
+./Stock
 
 Windows:
-main.exe
+Stock.exe
