@@ -20,6 +20,7 @@
 #include <time.h>
 #include <math.h>
 #include <vector>
+#include <omp.h>
 #include "Product.hpp"
 
 #define EMPTY_CELL "EMPTY"
