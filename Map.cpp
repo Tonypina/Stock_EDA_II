@@ -196,11 +196,17 @@ void Map::Sort( int first, int last ){
     }
 
     if(first < x1){
-        Sort( first, x1 );
+        #pragma omp task shared(first, x1)
+        {
+            Sort( first, x1 );
+        }
     }
 
     if(x0 < last){
-        Sort( x0, last );
+        #pragma omp task shared(x0, last)
+        {
+            Sort( x0, last );
+        }
     }
 }
 
