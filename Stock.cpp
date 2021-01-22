@@ -123,10 +123,13 @@ bool Stock::removeProduct( std::string id, int quantity ){
 void Stock::print(){
     system("clear");
 
+    Map map_copy = this->map;
+
     std::cout << "REPORTE DE INVENTARIO." << std::endl;
 
     std::cout << "\tCODIGO\t\tPRODUCTO\t\tCATEGORIA\t\tPRECIO\t\tCANTIDAD\n" << std::endl;
-    this->map.print();
+    map_copy.Sort( 0, map_copy.getSize()-1);
+    map_copy.print();
 }
 
 /**
