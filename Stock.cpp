@@ -32,7 +32,6 @@ Stock::Stock( int max_size ){
 bool Stock::createProduct( std::string id, Product product ){
 
     if ( this->map.Insert( make_pair( id, product ) ) ) {
-        //this->map.Sort( 0, this->map.getSize()-1 );
         return true;
     }
     return false;
@@ -48,7 +47,6 @@ bool Stock::createProduct( std::string id, Product product ){
 bool Stock::deleteProduct( std::string id ){
 
     if( this->map.Delete( id ) ){
-        //this->map.Sort( 0, this->map.getSize()-1 );
         return true;
     }
     return false;
