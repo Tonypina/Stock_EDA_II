@@ -126,7 +126,11 @@ void Stock::print(){
     std::cout << "REPORTE DE INVENTARIO." << std::endl;
 
     std::cout << "\tCODIGO\t\tPRODUCTO\t\tCATEGORIA\t\tPRECIO\t\tCANTIDAD\n" << std::endl;
-    map_copy.Sort( 0, map_copy.getSize()-1);
+    
+    #pragma omp parallel default(none) shared(map_copy)
+    {
+        map_copy.Sort( 0, map_copy.getSize()-1);
+    }
     map_copy.print();
 }
 
