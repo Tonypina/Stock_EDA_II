@@ -323,7 +323,7 @@ void Map::Serialize() {
  * 
  */
 void Map::Deserialize() {
-    FILE* file = fopen("stock.json", "r");
+    FILE* file = fopen("stock.json", "a+");
     char buffer[50];
     std::string buff;
     std::string str;
@@ -377,4 +377,5 @@ void Map::Deserialize() {
     }
 
     fclose(file);
+    remove("stock.json");
 }
