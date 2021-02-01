@@ -1,6 +1,5 @@
 /**
  * @file Stock.cpp
- * @author Piña Rossette Marco Antonio
  * @brief Definiciones de la clase Stock
  * @version 0.1
  * @date 2021-01-09
