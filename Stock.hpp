@@ -1,6 +1,5 @@
 /**
  * @file Stock.hpp
- * @author Piña Rossette Marco Antonio
  * @brief Declaración de la clase Stock
  * @version 0.1
  * @date 2021-01-09
