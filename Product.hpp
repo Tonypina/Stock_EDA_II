@@ -1,6 +1,5 @@
 /**
  * @file Product.hpp
- * @author Piña Rossette Marco Antonio
  * @brief Declaración de la clase Product
  * @version 0.1
  * @date 2021-01-09
