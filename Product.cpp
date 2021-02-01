@@ -1,6 +1,5 @@
 /**
  * @file Product.cpp
- * @author Piña Rossette Marco Antonio
  * @brief Defniciones de la clase Product
  * @version 0.1
  * @date 2021-01-09
