@@ -1,6 +1,5 @@
 /**
  * @file Map.hpp
- * @author Piña Rossette Marco Antonio
  * @brief Declaración de la clase Map
  * @version 0.1
  * @date 2021-01-09
