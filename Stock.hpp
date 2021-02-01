@@ -24,8 +24,6 @@ class Stock {
 
         Map map;
 
-        void sortProducts();
-
     public:
         Stock( int max_size );
 

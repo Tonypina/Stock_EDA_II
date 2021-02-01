@@ -254,46 +254,6 @@ float Map::getLoadFactor(){
 }
 
 /**
- * @brief Serializa los datos de la hash en un archivo binario
- * 
- */
-void Map::Serialize(){
-    FILE* file = fopen("inventario.dat", "ab");
-
-    for ( std::pair<std::string, Product> p : this->table ){
-        if( p.first.compare( EMPTY_CELL ) != 0 && p.first.compare( DELETED_CELL ) != 0 ){
-            fwrite( &p.first , sizeof( p.first ), 1, file );
-            fwrite( &p.second , sizeof( p.second ), 1, file );
-        }
-    }
-
-    fclose(file);
-}
-
-/**
- * @brief Deserializa los datos para merterlos en la hash
- * 
- */
-void Map::Deserialize(){
-    FILE* file = fopen("inventario.dat", "a+b");
-    std::pair<std::string, Product> p;
-
-    fread( &p.first, sizeof( std::string ), 1, file );
-    fread( &p.second, sizeof( Product ), 1, file );
-    while (!feof(file)){
-        
-        this->Insert( p );
-
-        fread( &p.first, sizeof( std::string ), 1, file );
-        fread( &p.second, sizeof( Product ), 1, file );        
-    }
-
-    fclose(file);
-    remove("inventario.dat");
-}
-
-
-/**
  * @brief Imprime la hash
  * 
  */
@@ -308,4 +268,61 @@ void Map::print(){
                 << std::endl;
         }
     }
+}
+
+/**
+ * @brief Serializa los objetos guardados en el mapa en un json
+ * 
+ */
+void Map::Serialize() {
+
+    std::vector<std::pair<std::string, Product>> json;
+
+    for (auto& p : this->table) {
+        if (p.first.compare(EMPTY_CELL) != 0) {
+            json.push_back(p);
+        }
+    }
+
+    FILE* file = fopen("stock.json", "w");
+
+    std::string str;
+
+    str = "{\n";
+    str += "\"products\" : [\n";
+
+    size_t productos_size = json.size();
+    for (auto& p : json) {
+        if (productos_size != 1) {
+            str += "\t{ \"id\" : \"" + p.first + "\""
+                + ", \"name\" : \"" + p.second.getName() + "\""
+                + ", \"type\" : \"" + p.second.getType() + "\""
+                + ", \"cost\" : " + std::to_string(p.second.getCost())
+                + ", \"quantity\" : " + std::to_string(p.second.getQuantity())
+                + " },\n";
+        } else {
+            str += "\t{ \"id\" : \"" + p.first + "\""
+                + ", \"name\" : \"" + p.second.getName() + "\""
+                + ", \"type\" : \"" + p.second.getType() + "\""
+                + ", \"cost\" : " + std::to_string(p.second.getCost())
+                + ", \"quantity\" : " + std::to_string(p.second.getQuantity())
+                + " }\n";
+        }
+        --productos_size;
+    }
+
+    str += "]\n";
+    str += "}";
+
+    fputs(str.c_str(), file);
+
+    fclose(file);
+}
+
+/**
+ * @brief Deserealiza los objetos de un archivo json
+ * 
+ */
+void Map::Deserialize() {
+
 }

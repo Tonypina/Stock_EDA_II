@@ -189,6 +189,7 @@ int main(){
                 while( removeProductMenu( &stock ) != 'N' );
                 continue;
             case 6:
+                stock.serialize();
                 break;
             default:
                 std::cout << "Opción inválida." << std::endl;

@@ -1,0 +1,6 @@
+{
+"products" : [
+	{ "id" : "ASDFGHJ", "name" : "Pepsi", "type" : "Refresco", "cost" : 43.200001, "quantity" : 12 },
+	{ "id" : "QWERTYU", "name" : "Dona", "type" : "Pan", "cost" : 23.400000, "quantity" : 12 }
+]
+}

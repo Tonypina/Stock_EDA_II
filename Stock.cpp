@@ -135,7 +135,7 @@ void Stock::print(){
 }
 
 /**
- * @brief Serializa los datos en un archivo binario
+ * @brief Serializa los datos en un archivo json
  * 
  */
 void Stock::serialize(){
@@ -143,7 +143,7 @@ void Stock::serialize(){
 }
 
 /**
- * @brief Desserializa los datos de un archivo binario
+ * @brief Desserializa los datos de un archivo json
  * 
  */
 void Stock::deserialize(){
