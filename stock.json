@@ -1,6 +1,25 @@
 {
 "products" : [
-	{ "id" : "ASDFGHJ", "name" : "Pepsi", "type" : "Refresco", "cost" : 43.200001, "quantity" : 12 },
-	{ "id" : "QWERTYU", "name" : "Dona", "type" : "Pan", "cost" : 23.400000, "quantity" : 12 }
+	{
+		 "id"       : "ASDFGHJ",
+		 "name"     : "Pepsi",
+		 "type"     : "Refresco",
+		 "cost"     :  43.200001,
+		 "quantity" :  34.0
+	},
+	{
+		 "id"       : "QWERTYU",
+		 "name"     : "Dona",
+		 "type"     : "Pan",
+		 "cost"     :  23.400000,
+		 "quantity" :  12.0
+	},
+	{
+		 "id"       : "ZXCVBNM",
+		 "name"     : "Laptop",
+		 "type"     : "Computo",
+		 "cost"     :  10500.000000,
+		 "quantity" :  2.0
+	}
 ]
 }

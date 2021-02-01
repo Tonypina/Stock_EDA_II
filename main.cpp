@@ -164,6 +164,7 @@ char removeProductMenu( Stock* stock ){
 int main(){
 
     Stock stock( HASH_SIZE );
+    stock.deserialize();
 
     for(;;){
         principalMenu();

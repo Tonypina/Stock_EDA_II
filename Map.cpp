@@ -293,19 +293,19 @@ void Map::Serialize() {
     size_t productos_size = json.size();
     for (auto& p : json) {
         if (productos_size != 1) {
-            str += "\t{ \"id\" : \"" + p.first + "\""
-                + ", \"name\" : \"" + p.second.getName() + "\""
-                + ", \"type\" : \"" + p.second.getType() + "\""
-                + ", \"cost\" : " + std::to_string(p.second.getCost())
-                + ", \"quantity\" : " + std::to_string(p.second.getQuantity())
-                + " },\n";
+            str += "\t{\n\t\t \"id\"       : \"" + p.first + "\""
+                + ",\n\t\t \"name\"     : \"" + p.second.getName() + "\""
+                + ",\n\t\t \"type\"     : \"" + p.second.getType() + "\""
+                + ",\n\t\t \"cost\"     :  " + std::to_string(p.second.getCost())
+                + ",\n\t\t \"quantity\" :  " + std::to_string(p.second.getQuantity()) + ".0"
+                + "\n\t},\n";
         } else {
-            str += "\t{ \"id\" : \"" + p.first + "\""
-                + ", \"name\" : \"" + p.second.getName() + "\""
-                + ", \"type\" : \"" + p.second.getType() + "\""
-                + ", \"cost\" : " + std::to_string(p.second.getCost())
-                + ", \"quantity\" : " + std::to_string(p.second.getQuantity())
-                + " }\n";
+            str += "\t{\n\t\t \"id\"       : \"" + p.first + "\""
+                + ",\n\t\t \"name\"     : \"" + p.second.getName() + "\""
+                + ",\n\t\t \"type\"     : \"" + p.second.getType() + "\""
+                + ",\n\t\t \"cost\"     :  " + std::to_string(p.second.getCost())
+                + ",\n\t\t \"quantity\" :  " + std::to_string(p.second.getQuantity()) + ".0"
+                + "\n\t}\n";
         }
         --productos_size;
     }
@@ -323,5 +323,58 @@ void Map::Serialize() {
  * 
  */
 void Map::Deserialize() {
+    FILE* file = fopen("stock.json", "r");
+    char buffer[50];
+    std::string buff;
+    std::string str;
+    size_t i = 0;
+    std::pair<std::string, Product> p;
 
+    for (size_t i = 0; i < 3; ++i) {
+        fgets(buffer, 50, file);
+    }
+
+    while (!feof(file)) {
+
+        fgets(buffer, 50, file);
+        buff = buffer;
+        int tam = buff.size();
+        if (tam > 4) {
+            i++;
+            for (int i = 17; i < tam - 3; ++i) {
+                str += buffer[i];
+            }
+            switch (i) {
+            case 1:
+                p.first = str;
+                str.clear();
+                break;
+            case 2:
+                p.second.setName(str);
+                str.clear();
+                break;
+            case 3:
+                p.second.setType(str);
+                str.clear();
+                break;
+            case 4:
+                p.second.setCost(std::atof(str.c_str()));
+                str.clear();
+                break;
+            case 5:
+                p.second.setQuantity(std::atoi(str.c_str()));
+                str.clear();
+                break;
+            default:
+                break;
+            }
+        }
+
+        if (!(i % 5)) {
+            this->Insert(p);
+            i = 0;
+        }
+    }
+
+    fclose(file);
 }
