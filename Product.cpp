@@ -35,6 +35,20 @@ Product::Product( std::string name, std::string type, float cost, int quantity )
 }
 
 /**
+ * @brief Imprime un producto
+ *
+ */
+void Product::print() {
+    
+    std::cout << "\tPRODUCTO\t\tCATEGORIA\t\tPRECIO\t\tCANTIDAD\n" << std::endl;
+    std::cout << "\t" << this->getName()
+        << "\t\t" << this->getType()
+        << "\t\t" << this->getCost()
+        << "\t\t" << this->getQuantity()
+        << std::endl;
+}
+
+/**
  * @brief Setter para el nombre del producto
  * 
  * @param name Nuevo nombre del producto

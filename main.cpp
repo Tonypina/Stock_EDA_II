@@ -26,7 +26,8 @@ void principalMenu(){
     std::cout << "3. Eliminar grupo." << std::endl;
     std::cout << "4. Agregar producto." << std::endl;
     std::cout << "5. Retirar producto." << std::endl;
-    std::cout << "6. Salir.\n" << std::endl;
+    std::cout << "6. Buscar producto.\n" << std::endl;
+    std::cout << "7. Salir.\n" << std::endl;
     std::cout << "--> ";
 }
 
@@ -74,9 +75,10 @@ char createGroupMenu( Stock* stock ){
         std::cout << "Se creó el grupo correctamente." << std::endl:
         std::cout << "El grupo ya existe." << std::endl;
 
-    std::cout << "¿Desea crear otro?" << std::endl;
+    std::cout << "¿Desea crear otro? (Y/N)" << std::endl;
     char opcion;
     std::cin >> opcion;
+    opcion = toupper(opcion);
     return opcion;
 }
 
@@ -99,9 +101,10 @@ char deleteGroupMenu( Stock* stock ){
         std::cout << "Se eliminó correctamente." << std::endl:
         std::cout << "No se pudo eliminar el producto." << std::endl;
 
-    std::cout << "¿Desea eliminar otro?" << std::endl;
+    std::cout << "¿Desea eliminar otro? (Y/N)" << std::endl;
     char opcion;
     std::cin >> opcion;
+    opcion = toupper(opcion);
     return opcion;
 }
 
@@ -127,9 +130,10 @@ char addProductMenu( Stock* stock ){
         std::cout << "Se agregó con éxito.\n" << std::endl:
         std::cout << "No se pudo agregar.\n" << std::endl;
 
-    std::cout << "¿Desea volver a agregar?" << std::endl;
+    std::cout << "¿Desea volver a agregar? (Y/N)" << std::endl;
     char opcion;
     std::cin >> opcion;
+    opcion = toupper(opcion);
     return opcion;
 }
 
@@ -155,16 +159,48 @@ char removeProductMenu( Stock* stock ){
         std::cout << "Se retiró con éxito." << std::endl:
         std::cout << "No se pudo retirar." << std::endl;
 
-    std::cout << "¿Desea volve a retirar?" << std::endl;
+    std::cout << "¿Desea volver a retirar? (Y/N)" << std::endl;
     char opcion;
     std::cin >> opcion;
+    opcion = toupper(opcion);
     return opcion;
 }
 
+/**
+ * @brief Muestra el menú de búsqueda
+ *
+ * @param stock Referencia de objeto Stock
+ * @return char Opción de salida
+ */
+char searchProductMenu( Stock* stock ) {
+    system("clear");
+
+    std::cout << "\nBUSCAR PRODUCTO" << std::endl;
+
+    std::cout << "\nID del producto: ";
+    std::string id;
+    std::cin >> id;
+
+    if (stock->searchProduct(id)) {
+        stock->searchProduct(id)->print();
+    } else {
+        std::cout << "No existe el producto buscado." << std::endl;
+    }
+
+    std::cout << "¿Desea volver a buscar? (Y/N)" << std::endl;
+    char opcion;
+    std::cin >> opcion;
+    opcion = toupper(opcion);
+    return opcion;
+}
+
+/**
+ * @brief Driver Program 
+ */
 int main(){
 
     Stock stock( HASH_SIZE );
-    stock.deserialize();
+    stock.load();
 
     for(;;){
         principalMenu();
@@ -190,7 +226,10 @@ int main(){
                 while( removeProductMenu( &stock ) != 'N' );
                 continue;
             case 6:
-                stock.serialize();
+                while (searchProductMenu(&stock) != 'N');
+                continue;
+            case 7:
+                stock.save();
                 break;
             default:
                 std::cout << "Opción inválida." << std::endl;

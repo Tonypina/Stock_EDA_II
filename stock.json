@@ -1,0 +1,18 @@
+{
+"products" : [
+	{
+		 "id"       : "ASDFGHJ",
+		 "name"     : "Pepsi",
+		 "type"     : "Refresco",
+		 "cost"     :  32.099991,
+		 "quantity" :  43.0
+	},
+	{
+		 "id"       : "QWERTYU",
+		 "name"     : "Dona",
+		 "type"     : "Pan",
+		 "cost"     :  12.300000,
+		 "quantity" :  66.0
+	}
+]
+}

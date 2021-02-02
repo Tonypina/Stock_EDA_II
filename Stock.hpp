@@ -22,6 +22,8 @@ class Stock {
     private:
 
         Map map;
+        void serialize();
+        void deserialize();
 
     public:
         Stock( int max_size );
@@ -33,8 +35,8 @@ class Stock {
         bool addProduct( std::string id, int quantity );
         bool removeProduct( std::string id, int quantity );
         void print();
-        void serialize();
-        void deserialize();
+        void save();
+        void load();
 };
 
 #endif   /* ----- #ifndef Stock_INC  ----- */

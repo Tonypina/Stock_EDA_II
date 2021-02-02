@@ -12,7 +12,8 @@
 #define Product_INC
 
 #include <string>
-
+#include <ostream>
+#include <iostream>
 /**
  * @brief Clase Product
  * 
@@ -30,7 +31,7 @@ class Product {
 
         Product();
         Product( std::string name, std::string type, float cost, int quantity );
-        void Print();
+        void print();
 
         void setName( std::string name );
         void setType( std::string type );

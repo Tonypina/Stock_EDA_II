@@ -148,3 +148,18 @@ void Stock::serialize(){
 void Stock::deserialize(){
     this->map.Deserialize();
 }
+
+/**
+ * @brief Guarda los datos del programa
+ * 
+ */
+void Stock::save() {
+    this->serialize();
+}
+
+/**
+ * @brief Carga los datos del programa
+ */
+void Stock::load() {
+    this->deserialize();
+}
