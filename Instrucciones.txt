@@ -1,7 +1,0 @@
-g++ -Wall -fopenmp -o Stock main.cpp Product.cpp Map.cpp Stock.cpp
-
-Linux:
-./Stock
-
-Windows:
-Stock.exe
