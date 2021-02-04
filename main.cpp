@@ -122,14 +122,17 @@ char addProductMenu( Stock* stock ){
     std::cout << "\nID del producto: ";
     std::string id;
     std::cin >> id;
-    std::cout << "\nCantidad de producto a agregar: ";
-    int quantity;
-    std::cin >> quantity;
+    if( !stock->existsProduct(id) ){
+        std::cout << "\nCantidad de producto a agregar: ";
+        int quantity;
+        std::cin >> quantity;
 
-    ( stock->addProduct( id, quantity ) )?
-        std::cout << "Se agregó con éxito.\n" << std::endl:
-        std::cout << "No se pudo agregar.\n" << std::endl;
-
+        ( stock->addProduct( id, quantity ) )?
+            std::cout << "Se agregó con éxito.\n" << std::endl:
+            std::cout << "No se pudo agregar.\n" << std::endl;
+    } else {
+        std::cout << "No existe el producto." << std::endl;
+    }
     std::cout << "¿Desea volver a agregar? (Y/N)" << std::endl;
     char opcion;
     std::cin >> opcion;
@@ -151,14 +154,18 @@ char removeProductMenu( Stock* stock ){
     std::cout << "\nID del producto:";
     std::string id;
     std::cin >> id;
-    std::cout << "\nCantidad del producto a retirar:";
-    int quantity;
-    std::cin >> quantity;
+    
+    if( !stock->existsProduct( id ) ){
+        std::cout << "\nCantidad del producto a retirar:";
+        int quantity;
+        std::cin >> quantity;
 
-    ( stock->removeProduct( id, quantity ) )?
-        std::cout << "Se retiró con éxito." << std::endl:
-        std::cout << "No se pudo retirar." << std::endl;
-
+        ( stock->removeProduct( id, quantity ) )?
+            std::cout << "Se retiró con éxito." << std::endl:
+            std::cout << "No se pudo retirar." << std::endl;
+    } else {    
+        std::cout << "No existe el producto." << std::endl;
+    }
     std::cout << "¿Desea volver a retirar? (Y/N)" << std::endl;
     char opcion;
     std::cin >> opcion;

@@ -278,7 +278,7 @@ void Map::Serialize() {
     std::vector<std::pair<std::string, Product>> json;
 
     for (auto& p : this->table) {
-        if (p.first.compare(EMPTY_CELL) != 0) {
+        if (p.first.compare(EMPTY_CELL) != 0 && p.first.compare(DELETED_CELL) != 0) {
             json.push_back(p);
         }
     }
